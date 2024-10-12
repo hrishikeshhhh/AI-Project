@@ -5,6 +5,7 @@ function App() {
   const [city, setCity] = useState('');
   const [places, setPlaces] = useState([]);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleCityChange = (e) => {
     setCity(e.target.value);
@@ -33,7 +34,23 @@ function App() {
   const handleAddPlace = (place) => {
     if (!selectedPlaces.includes(place)) {
       setSelectedPlaces([...selectedPlaces, place]);
+      setShowPopup(true);
     }
+  };
+
+  const handleRemovePlace = (place) => {
+    const updatedPlaces = selectedPlaces.filter(
+      (selectedPlace) => selectedPlace !== place
+    );
+    setSelectedPlaces(updatedPlaces);
+    if (updatedPlaces.length === 0) {
+      setShowPopup(false);
+    }
+  };
+
+  const handleGoToMap = () => {
+    // You can redirect the user to the map or handle the logic here
+    alert('Navigating to the map with selected places!');
   };
 
   return (
@@ -52,7 +69,7 @@ function App() {
             placeholder="Enter a city"
           />
           <button onClick={handleSearch}>
-            <span className="material-icons">search</span> {/* Material Icon */}
+            <span className="material-icons">search</span>
           </button>
         </div>
       </div>
@@ -79,12 +96,26 @@ function App() {
       )}
       
       {/* Selected Places */}
-      <h2>Your Itinerary</h2>
-      <ul>
-        {selectedPlaces.map((place, index) => (
-          <li key={index}>{place.name}</li>
-        ))}
-      </ul>
+      {showPopup && (
+        <div className="popup">
+          <h2>Your Itinerary</h2>
+          <div className="popup-list">
+            <ul>
+              {selectedPlaces.map((place, index) => (
+                <li key={index}>
+                  {place.name}
+                  <button onClick={() => handleRemovePlace(place)}>
+                    <span className="material-icons">delete</span>  
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <button className="map-button" onClick={handleGoToMap}>
+            Go to Map
+          </button>
+        </div>
+      )}
     </div>
   );
 }

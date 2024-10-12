@@ -134,6 +134,100 @@
   background-color: #B34630;
 }
 
-.itinerary-section {
-  margin-top: 20px;
+/* Popup for Selected Places*/
+
+.popup {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 400px;
+  transition: all 0.3s ease;
+}
+
+.popup h2 {
+  font-size: 1.2em;
+  margin: 0 0 10px;
+}
+
+.popup-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.popup-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.popup-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.popup-list::-webkit-scrollbar-thumb {
+  background-color: #e57373;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+.popup-list::-webkit-scrollbar-thumb:hover {
+  background-color: #d32f2f;
+}
+
+.popup-list::-webkit-scrollbar-thumb:active {
+  background-color: #c62828;
+}
+
+/* For Firefox */
+.popup-list {
+  scrollbar-width: thin;
+  scrollbar-color: #e57373 #f1f1f1;
+}
+
+.popup-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.popup-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.popup-list li button {
+  background-color: #E0583C;
+  color: white;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup-list li button:hover {
+  background-color: #B34630;
+}
+
+.map-button {
+  background-color: #E0583C;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.map-button:hover {
+  background-color: #B34630;
 }
