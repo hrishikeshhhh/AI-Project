@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css';
 
 function App() {
   const [city, setCity] = useState('');
@@ -21,16 +22,24 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Travel Planner</h1>
       
-      {/* City Input */}
-      <input 
-        type="text" 
-        value={city} 
-        onChange={handleCityChange} 
-        placeholder="Enter a city"
-      />
-      <button onClick={handleSearch}>Search Famous Places</button>
+      {/* Search Section */}
+      <div className = 'search-secton'> 
+        <h1>Which place would you like to explore?</h1>
+        <div className='search-bar'>
+          {/* City Input */}
+          <input 
+            type="text" 
+            value={city} 
+            onChange={handleCityChange} 
+            placeholder="Enter a city"
+          />
+          <button onClick={handleSearch}>
+            <span className="material-icons">search</span> {/* Material Icon */}
+          </button>
+        </div>
+      </div>
+      
       
       {/* Show Famous Places */}
       <h2>Famous Places in {city}</h2>
