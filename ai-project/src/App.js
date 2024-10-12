@@ -11,13 +11,23 @@ function App() {
   };
 
   const handleSearch = async () => {
-    const response = await fetch(`http://localhost:5000/places?city=${city}`);
-    const data = await response.json();
-    setPlaces(data.places);
+    if (!city) {
+      alert('Please enter a city');
+      return;
+    }
+    try {
+      const response = await fetch(`http://localhost:5000/places?city=${city}`);
+      const data = await response.json();
+      setPlaces(data.places);
+    } catch (error) {
+      console.error('Error fetching places:', error);
+    }
   };
 
   const handleAddPlace = (place) => {
-    setSelectedPlaces([...selectedPlaces, place]);
+    if (!selectedPlaces.includes(place)) {
+      setSelectedPlaces([...selectedPlaces, place]);
+    }
   };
 
   return (
@@ -40,17 +50,20 @@ function App() {
         </div>
       </div>
       
-      
-      {/* Show Famous Places */}
-      <h2>Famous Places in {city}</h2>
-      <ul>
-        {places.map((place, index) => (
-          <li key={index}>
-            {place.name} 
-            <button onClick={() => handleAddPlace(place)}>Add to Itinerary</button>
-          </li>
-        ))}
-      </ul>
+      {places.length > 0 && (
+        <div className="places-section">
+          <h2>Famous Places in {city}</h2>
+          <div className="places-grid">
+            {places.map((place, index) => (
+              <div key={index} className="place-card">
+                <img src={place.image} alt={place.name} className="place-image" />
+                <h3>{place.name}</h3>
+                <button onClick={() => handleAddPlace(place)}>Add to Itinerary</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       
       {/* Selected Places */}
       <h2>Your Itinerary</h2>
