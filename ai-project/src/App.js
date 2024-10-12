@@ -10,6 +10,12 @@ function App() {
     setCity(e.target.value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   const handleSearch = async () => {
     if (!city) {
       alert('Please enter a city');
@@ -41,7 +47,8 @@ function App() {
           <input 
             type="text" 
             value={city} 
-            onChange={handleCityChange} 
+            onChange={handleCityChange}
+            onKeyDown={handleKeyDown}
             placeholder="Enter a city"
           />
           <button onClick={handleSearch}>
@@ -50,13 +57,19 @@ function App() {
         </div>
       </div>
       
+      {/* Famous Places Section */}
       {places.length > 0 && (
         <div className="places-section">
           <h2>Famous Places in {city}</h2>
           <div className="places-grid">
             {places.map((place, index) => (
               <div key={index} className="place-card">
-                <img src={place.image} alt={place.name} className="place-image" />
+                <img 
+                  src={place.image} 
+                  alt={place.name} 
+                  className="place-image"
+                  onError={(e) => { e.target.onerror = null; e.target.src = ''; }}
+                />
                 <h3>{place.name}</h3>
                 <button onClick={() => handleAddPlace(place)}>Add to Itinerary</button>
               </div>

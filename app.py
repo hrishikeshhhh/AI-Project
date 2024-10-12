@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Initialize Google Maps Client with your API key
-gmaps = googlemaps.Client(key= creds.api_key)
+gmaps = googlemaps.Client(key=creds.api_key)
 
 @app.route('/places', methods=['GET'])
 def get_places():
@@ -20,10 +20,17 @@ def get_places():
         
         places = []
         for place in places_result['results']:
+            # Fetch photo reference if available
+            photo_url = None
+            if 'photos' in place:
+                photo_reference = place['photos'][0]['photo_reference']
+                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={creds.api_key}"
+            
             places.append({
                 'name': place['name'],
                 'lat': place['geometry']['location']['lat'],
-                'lon': place['geometry']['location']['lng']
+                'lon': place['geometry']['location']['lng'],
+                'image': photo_url
             })
 
         return jsonify({'places': places})
