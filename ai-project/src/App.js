@@ -23,16 +23,20 @@ function App() {
 
   const handleSearch = async () => {
     if (!city) {
-      alert('Please enter a city');
-      return;
+        alert('Please enter a city');
+        return;
     }
     try {
-      const data = await fetchPlaces(city);
-      setPlaces(data.places);
+        const response = await fetch(`http://localhost:5000/places?city=${city}`);
+        const data = await response.json();
+        setPlaces(data.places);
+        setSelectedPlaces([]);
+        setShowPopup(false);
     } catch (error) {
-      console.error('Error fetching places:', error);
+        console.error('Error fetching places:', error);
     }
   };
+
 
   const handleAddPlace = (place) => {
     if (!selectedPlaces.includes(place)) {

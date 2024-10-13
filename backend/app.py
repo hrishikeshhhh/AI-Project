@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, json
 import googlemaps
 from flask_cors import CORS
-import backend.creds as creds
+import creds
 import os
 
 app = Flask(__name__)
