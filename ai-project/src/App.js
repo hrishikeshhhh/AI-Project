@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
+import SearchBar from './components/SearchBar';
+import PlacesList from './components/PlacesList';
+import Popup from './components/Popup';
+import { fetchPlaces, savePlaces } from './utils/api';
 
 function App() {
   const [city, setCity] = useState('');
@@ -23,8 +27,7 @@ function App() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5000/places?city=${city}`);
-      const data = await response.json();
+      const data = await fetchPlaces(city);
       setPlaces(data.places);
     } catch (error) {
       console.error('Error fetching places:', error);
@@ -49,92 +52,35 @@ function App() {
   };
 
   const handleGoToMap = async () => {
-    const data = selectedPlaces.map(place => ({name: place.name, lat: place.lat, lon: place.lon}));
-
-    // Redirect to map page
-    window.location.href = `http://localhost:3000/map?places=${JSON.stringify(data)}`;
-    
-
-    try {
-      const response = await fetch('http://localhost:5000/save_places', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        console.log('Data sent successfully');
-      } else {
-        console.error('Failed to send data');
-      }
-    } catch (error) {
-      console.error('Error sending data:', error);
-    }
+    window.location.href = `http://localhost:3000/map?places=${JSON.stringify(selectedPlaces)}`;
+    await savePlaces(selectedPlaces);
   };
 
   return (
     <div className="App">
-      
       {/* Search Section */}
-      <div className = 'search-secton'> 
-        <h1>Which place would you like to explore?</h1>
-        <div className='search-bar'>
-          {/* City Input */}
-          <input 
-            type="text" 
-            value={city} 
-            onChange={handleCityChange}
-            onKeyDown={handleKeyDown}
-            placeholder="Enter a city"
-          />
-          <button onClick={handleSearch}>
-            <span className="material-icons">search</span>
-          </button>
-        </div>
-      </div>
-      
+      <SearchBar 
+        city={city} 
+        onCityChange={handleCityChange} 
+        onSearch={handleSearch} 
+        onKeyDown={handleKeyDown}
+      />
+
       {/* Famous Places Section */}
       {places.length > 0 && (
-        <div className="places-section">
-          <h2>Famous Places in {city}</h2>
-          <div className="places-grid">
-            {places.map((place, index) => (
-              <div key={index} className="place-card">
-                <img 
-                  src={place.image} 
-                  alt={place.name} 
-                  className="place-image"
-                  onError={(e) => { e.target.onerror = null; e.target.src = ''; }}
-                />
-                <h3>{place.name}</h3>
-                <button onClick={() => handleAddPlace(place)}>Add to Itinerary</button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <PlacesList 
+          places={places} 
+          onAddPlace={handleAddPlace}
+        />
       )}
-      
+
       {/* Selected Places */}
       {showPopup && (
-        <div className="popup">
-          <h2>Your Itinerary</h2>
-          <div className="popup-list">
-            <ul>
-              {selectedPlaces.map((place, index) => (
-                <li key={index}>
-                  {place.name}
-                  <button onClick={() => handleRemovePlace(place)}>
-                    <span className="material-icons">delete</span>  
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <button className="map-button" onClick={handleGoToMap}>
-            Go to Map
-          </button>
-        </div>
+        <Popup 
+          selectedPlaces={selectedPlaces} 
+          onRemovePlace={handleRemovePlace} 
+          onGoToMap={handleGoToMap}
+        />
       )}
     </div>
   );
