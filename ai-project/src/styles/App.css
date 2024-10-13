@@ -67,6 +67,12 @@
   margin: 20px 0;
 }
 
+.places-section h2 span {
+  color: #E0583C;
+  font-style: italic;
+  font-size: 26px;
+}
+
 .places-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

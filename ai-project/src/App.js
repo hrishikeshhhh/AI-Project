@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './App.css';
+import './styles/App.css';
 import SearchBar from './components/SearchBar';
 import PlacesList from './components/PlacesList';
 import Popup from './components/Popup';
-import { fetchPlaces, savePlaces } from './utils/api';
+import { fetchPlaces} from './utils/api';
 
 function App() {
   const [city, setCity] = useState('');
@@ -87,6 +87,7 @@ function App() {
       {/* Famous Places Section */}
       {places.length > 0 && (
         <PlacesList 
+          city = {city}
           places={places} 
           onAddPlace={handleAddPlace}
         />

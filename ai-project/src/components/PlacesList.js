@@ -1,9 +1,9 @@
 import React from 'react';
 
-const PlacesList = ({ places, onAddPlace }) => {
+const PlacesList = ({ city, places, onAddPlace }) => {
   return (
     <div className="places-section">
-      <h2>Famous Places </h2>
+      <h2>Famous Places in <span>{city}</span> </h2>
       <div className="places-grid">
         {places.map((place, index) => (
           <div key={index} className="place-card">
