@@ -1,10 +1,9 @@
 import folium, googlemaps, polyline, math, creds, json
+from folium import plugins
 
 # Load places from selected_places.json
-
 with open('selected_places.json') as f:
     places = json.load(f)
-
 
 # Initialize Google Maps Client with your API key
 gmaps = googlemaps.Client(key=creds.api_key)
@@ -54,41 +53,64 @@ def dijkstra(start_place):
                 distances[neighbor["name"]] = new_distance
                 previous[neighbor["name"]] = current_place
                 pq.append((new_distance, neighbor["name"]))
-
     return distances, previous
 
 
 def visualize_dijkstra(start_place, previous):
-    # Create map centered at the starting place
-    map = folium.Map(location=[start_place['lat'], start_place['lon']], zoom_start=10)
+    start_coords = (start_place["lat"], start_place["lon"])
+    map = folium.Map(location=start_coords, zoom_start=5)
 
-    # Add markers for other places
-    for place in places:
-            folium.Marker(location=[place['lat'], place['lon']], popup=place['name']).add_to(map)
+    marker_group = folium.FeatureGroup(name="Markers")
+    polyline_group = folium.FeatureGroup(name="Polylines")
+    # Add the start marker
+    start_marker = folium.Marker(start_coords, tooltip=start_place["name"], icon=folium.Icon(color="green"))
+    marker_group.add_child(start_marker)
 
-    # Draw polylines between all pairs of places based on Dijkstra's algorithm
+    # Add markers for the remaining places
     for place in places:
-        if place != start_place:
-            path = [place['name']]
-            current_place = place
-            while previous[current_place['name']]:
-                path.append(previous[current_place['name']]['name'])
-                current_place = previous[current_place['name']]
-            path.reverse()
-            for i in range(len(path) - 1):
-                start = next(p for p in places if p['name'] == path[i])
-                end = next(p for p in places if p['name'] == path[i + 1])
-                directions = gmaps.directions(
-                    f"{start['lat']}, {start['lon']}", f"{end['lat']}, {end['lon']}", mode="driving"
+        if place["name"] != start_place["name"]:
+            coords = (place["lat"], place["lon"])
+            marker = folium.Marker(coords, tooltip=place["name"])
+            marker_group.add_child(marker)
+
+    map.add_child(marker_group)
+    map.add_child(polyline_group)
+    # Simulate the steps of Dijkstra's algorithm
+    visited = set()
+    current_place = start_place
+    visited.add(current_place["name"])
+
+    while True:
+        # Find the nearest unvisited neighbor
+        min_distance = float("inf")
+        nearest_neighbor = None
+
+        for neighbor in places:
+            if neighbor["name"] not in visited:
+                distance = haversine_distance(
+                    current_place["lat"], current_place["lon"], neighbor["lat"], neighbor["lon"]
                 )
-                points = polyline.decode(directions[0]['overview_polyline']['points'])
-                folium.PolyLine(locations=points, color='blue').add_to(map)
+                if distance < min_distance:
+                    min_distance = distance
+                    nearest_neighbor = neighbor
 
-    # Save map to HTML file
+        # If all places have been visited, break out of the loop
+        if nearest_neighbor is None:
+            break
+        # Draw the polyline from the current place to the nearest neighbor
+        coords1 = (current_place["lat"], current_place["lon"])
+        coords2 = (nearest_neighbor["lat"], nearest_neighbor["lon"])
+        polyline = folium.PolyLine([coords1, coords2], color="red", weight=2.5, opacity=1)
+        polyline_group.add_child(polyline)
+
+        # Update the current place and visited set
+        current_place = nearest_neighbor
+        visited.add(current_place["name"])
+
+    # display the map
     map.save("dijkstra_visualization.html")
 
-
-    # Example usage
-    start_place = places[0]
-    distances, previous = dijkstra(start_place)
-    visualize_dijkstra(start_place, previous)
+# Example usage
+start_place = places[0]
+distances, previous = dijkstra(start_place)
+visualize_dijkstra(start_place, previous)
