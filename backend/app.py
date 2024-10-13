@@ -2,11 +2,11 @@ from flask import Flask, request, jsonify, json
 import googlemaps
 from flask_cors import CORS
 import creds
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Google Maps Client with your API key
 gmaps = googlemaps.Client(key=creds.api_key)
 
 @app.route('/places', methods=['GET'])
@@ -20,7 +20,6 @@ def get_places():
         
         places = []
         for place in places_result['results']:
-            # Fetch photo reference if available
             photo_url = None
             if 'photos' in place:
                 photo_reference = place['photos'][0]['photo_reference']
@@ -40,9 +39,14 @@ def get_places():
 @app.route('/save_places', methods=['POST'])
 def save_places():
     data = request.json
-    print(data)  
-    # save the data in a json file
-    with open('selected_places.json', 'w') as f:
+    folder_path = './data'
+
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+    file_path = os.path.join(folder_path, 'selected_places.json')
+
+    with open(file_path, 'w') as f:
         f.write(json.dumps(data))
 
     return jsonify({'message': 'Places saved successfully!'})

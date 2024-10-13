@@ -54,7 +54,7 @@ function App() {
   const handleGoToMap = async () => {
     const data = selectedPlaces.map(place => ({name: place.name, lat: place.lat, lon: place.lon}));
     // Redirect to map page
-    window.location.href = `http://localhost:3000/map?places=${JSON.stringify(data)}`;
+    // window.location.href = `http://localhost:3000/map?places=${JSON.stringify(data)}`;
     
     try {
       const response = await fetch('http://localhost:5000/save_places', {
