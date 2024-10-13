@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_a83ffe4c8e95e75f65557d92d8578be7 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_a83ffe4c8e95e75f65557d92d8578be7" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_a83ffe4c8e95e75f65557d92d8578be7 = L.map(
+                "map_a83ffe4c8e95e75f65557d92d8578be7",
+                {
+                    center: [48.8525003, 2.370342200000001],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_66cdff62cd5f549dbf051a9447d2a3a6 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_66cdff62cd5f549dbf051a9447d2a3a6.addTo(map_a83ffe4c8e95e75f65557d92d8578be7);
+        
+    
+            var marker_6b9f3cee5029ceba74aa2a7e6633590c = L.marker(
+                [48.8525003, 2.370342200000001],
+                {}
+            ).addTo(map_a83ffe4c8e95e75f65557d92d8578be7);
+        
+    
+            var icon_2163fccdb04255eb032c0c78fed54976 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_6b9f3cee5029ceba74aa2a7e6633590c.setIcon(icon_2163fccdb04255eb032c0c78fed54976);
+        
+    
+        var popup_0d15a0de41c034dbdf7cc0feeff1ce5e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_d2b840e05d0b28046afd2185d180c690 = $(`<div id="html_d2b840e05d0b28046afd2185d180c690" style="width: 100.0%; height: 100.0%;">Opéra Bastille</div>`)[0];
+                popup_0d15a0de41c034dbdf7cc0feeff1ce5e.setContent(html_d2b840e05d0b28046afd2185d180c690);
+            
+        
+
+        marker_6b9f3cee5029ceba74aa2a7e6633590c.bindPopup(popup_0d15a0de41c034dbdf7cc0feeff1ce5e)
+        ;
+
+        
+    
+    
+            var marker_2f09bc5d85d00a368baaa232d19223a6 = L.marker(
+                [48.8841232, 2.3322519],
+                {}
+            ).addTo(map_a83ffe4c8e95e75f65557d92d8578be7);
+        
+    
+            var icon_7924afdcf864a86766e65865a6b84b64 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_2f09bc5d85d00a368baaa232d19223a6.setIcon(icon_7924afdcf864a86766e65865a6b84b64);
+        
+    
+        var popup_8e482470e08aa6b063454d1f4549cb0f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_280cb34d12806cec4fcfee962e4775e1 = $(`<div id="html_280cb34d12806cec4fcfee962e4775e1" style="width: 100.0%; height: 100.0%;">Moulin Rouge</div>`)[0];
+                popup_8e482470e08aa6b063454d1f4549cb0f.setContent(html_280cb34d12806cec4fcfee962e4775e1);
+            
+        
+
+        marker_2f09bc5d85d00a368baaa232d19223a6.bindPopup(popup_8e482470e08aa6b063454d1f4549cb0f)
+        ;
+
+        
+    
+    
+            var marker_bc580dc152f4df771c89a00b68725c70 = L.marker(
+                [48.85296820000001, 2.3499021],
+                {}
+            ).addTo(map_a83ffe4c8e95e75f65557d92d8578be7);
+        
+    
+            var icon_2e4ae29bfcb0c993519b1f7076f62c97 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_bc580dc152f4df771c89a00b68725c70.setIcon(icon_2e4ae29bfcb0c993519b1f7076f62c97);
+        
+    
+        var popup_8daa782575673183b51de7ad188c9d86 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_48fa743ff38b04daa583c58c82c31553 = $(`<div id="html_48fa743ff38b04daa583c58c82c31553" style="width: 100.0%; height: 100.0%;">Cathédrale Notre-Dame de Paris</div>`)[0];
+                popup_8daa782575673183b51de7ad188c9d86.setContent(html_48fa743ff38b04daa583c58c82c31553);
+            
+        
+
+        marker_bc580dc152f4df771c89a00b68725c70.bindPopup(popup_8daa782575673183b51de7ad188c9d86)
+        ;
+
+        
+    
+    
+            var marker_27b7aa9f4dac9efb530c2c9692e55490 = L.marker(
+                [48.8525003, 2.370342200000001],
+                {}
+            ).addTo(map_a83ffe4c8e95e75f65557d92d8578be7);
+        
+    
+            var icon_eb64981f66a06459c4dc476d3ac01277 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "play", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_27b7aa9f4dac9efb530c2c9692e55490.setIcon(icon_eb64981f66a06459c4dc476d3ac01277);
+        
+    
+        var popup_d0286772f98b2a385e4f98c9fd2b4e9b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_4a98e0fb533ab347f132c8aa16100e81 = $(`<div id="html_4a98e0fb533ab347f132c8aa16100e81" style="width: 100.0%; height: 100.0%;">Start: Opéra Bastille</div>`)[0];
+                popup_d0286772f98b2a385e4f98c9fd2b4e9b.setContent(html_4a98e0fb533ab347f132c8aa16100e81);
+            
+        
+
+        marker_27b7aa9f4dac9efb530c2c9692e55490.bindPopup(popup_d0286772f98b2a385e4f98c9fd2b4e9b)
+        ;
+
+        
+    
+    
+            var marker_ed283aa88197a1b191fb4e0f3de7e857 = L.marker(
+                [48.85296820000001, 2.3499021],
+                {}
+            ).addTo(map_a83ffe4c8e95e75f65557d92d8578be7);
+        
+    
+            var icon_8a8e9160a16d80cd47610968883d322b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "stop", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ed283aa88197a1b191fb4e0f3de7e857.setIcon(icon_8a8e9160a16d80cd47610968883d322b);
+        
+    
+        var popup_f1b0af85d96fa1d47a5b8d38043e88e6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_02c9c8fdc98d3a2a26a9f89046e1aa90 = $(`<div id="html_02c9c8fdc98d3a2a26a9f89046e1aa90" style="width: 100.0%; height: 100.0%;">End: Cathédrale Notre-Dame de Paris</div>`)[0];
+                popup_f1b0af85d96fa1d47a5b8d38043e88e6.setContent(html_02c9c8fdc98d3a2a26a9f89046e1aa90);
+            
+        
+
+        marker_ed283aa88197a1b191fb4e0f3de7e857.bindPopup(popup_f1b0af85d96fa1d47a5b8d38043e88e6)
+        ;
+
+        
+    
+    
+            var poly_line_a8fce14d5fca1059a3e11f1f5705f1a0 = L.polyline(
+                [[48.85268, 2.37072], [48.85145, 2.37217], [48.85115, 2.3725], [48.85076, 2.37295], [48.85008, 2.37377], [48.84964, 2.37432], [48.84952, 2.37412], [48.84866, 2.3726], [48.84853, 2.37237], [48.84823, 2.37186], [48.84801, 2.37143], [48.84746, 2.37049], [48.84689, 2.36947], [48.84679, 2.3693], [48.84625, 2.36836], [48.84619, 2.36824], [48.84614, 2.3682], [48.84606, 2.36802], [48.84584, 2.36761], [48.84556, 2.36706], [48.84497, 2.36603], [48.84443, 2.36509], [48.8444, 2.36491], [48.84441, 2.36474], [48.84445, 2.36456], [48.84449, 2.36447], [48.84456, 2.36436], [48.84459, 2.36426], [48.84471, 2.36412], [48.84493, 2.36379], [48.84516, 2.36345], [48.84553, 2.36291], [48.84634, 2.36169], [48.84713, 2.36054], [48.84782, 2.3595], [48.84845, 2.35856], [48.84874, 2.35815], [48.84891, 2.35792], [48.84907, 2.35765], [48.84918, 2.35743], [48.84929, 2.35712], [48.8495, 2.35647], [48.8499, 2.35513], [48.85, 2.35492], [48.85009, 2.35462], [48.85071, 2.35259], [48.85095, 2.35189], [48.85114, 2.35131], [48.85131, 2.35143], [48.85184, 2.35176], [48.85235, 2.35208], [48.85252, 2.35219], [48.85261, 2.35221], [48.85313, 2.35215], [48.85355, 2.35204], [48.85373, 2.35196], [48.85404, 2.35175], [48.85454, 2.35126], [48.85475, 2.35093], [48.85485, 2.35075], [48.85507, 2.35026], [48.85473, 2.35001], [48.85439, 2.34976], [48.8543, 2.35004], [48.85422, 2.35017], [48.85407, 2.35038], [48.85376, 2.35085], [48.85369, 2.35091], [48.85367, 2.35092], [48.85363, 2.35092], [48.85341, 2.35076], [48.85323, 2.35061]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_a83ffe4c8e95e75f65557d92d8578be7);
+        
+</script>
+</html>
