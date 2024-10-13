@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
 import googlemaps
 from flask_cors import CORS
 import creds
@@ -36,6 +36,16 @@ def get_places():
         return jsonify({'places': places})
     else:
         return jsonify({'error': 'City not found'}), 404
+    
+@app.route('/save_places', methods=['POST'])
+def save_places():
+    data = request.json
+    print(data)  
+    # save the data in a json file
+    with open('selected_places.json', 'w') as f:
+        f.write(json.dumps(data))
+
+    return jsonify({'message': 'Places saved successfully!'})
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -48,9 +48,29 @@ function App() {
     }
   };
 
-  const handleGoToMap = () => {
-    // You can redirect the user to the map or handle the logic here
-    alert('Navigating to the map with selected places!');
+  const handleGoToMap = async () => {
+    const data = selectedPlaces.map(place => ({name: place.name, lat: place.lat, lon: place.lon}));
+
+    // Redirect to map page
+    window.location.href = `http://localhost:3000/map?places=${JSON.stringify(data)}`;
+    
+
+    try {
+      const response = await fetch('http://localhost:5000/save_places', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        console.log('Data sent successfully');
+      } else {
+        console.error('Failed to send data');
+      }
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
   };
 
   return (
