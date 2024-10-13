@@ -1,4 +1,4 @@
-import folium, googlemaps, polyline, math, creds, json
+import folium, googlemaps, polyline, math, backend.creds as creds, json
 from folium import plugins
 
 # Load places from selected_places.json
