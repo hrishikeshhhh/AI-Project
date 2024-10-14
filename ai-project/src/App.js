@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import SearchBar from './components/SearchBar';
 import PlacesList from './components/PlacesList';
 import Popup from './components/Popup';
-import { fetchPlaces} from './utils/api';
+import MapPage from './components/MapPage.js';
 
 function App() {
   const [city, setCity] = useState('');
@@ -23,20 +24,19 @@ function App() {
 
   const handleSearch = async () => {
     if (!city) {
-        alert('Please enter a city');
-        return;
+      alert('Please enter a city');
+      return;
     }
     try {
-        const response = await fetch(`http://localhost:5000/places?city=${city}`);
-        const data = await response.json();
-        setPlaces(data.places);
-        setSelectedPlaces([]);
-        setShowPopup(false);
+      const response = await fetch(`http://localhost:5000/places?city=${city}`);
+      const data = await response.json();
+      setPlaces(data.places);
+      setSelectedPlaces([]);
+      setShowPopup(false);
     } catch (error) {
-        console.error('Error fetching places:', error);
+      console.error('Error fetching places:', error);
     }
   };
-
 
   const handleAddPlace = (place) => {
     if (!selectedPlaces.includes(place)) {
@@ -56,9 +56,11 @@ function App() {
   };
 
   const handleGoToMap = async () => {
-    const data = selectedPlaces.map(place => ({name: place.name, lat: place.lat, lon: place.lon}));
-    // Redirect to map page
-    // window.location.href = `http://localhost:3000/map?places=${JSON.stringify(data)}`;
+    const data = selectedPlaces.map((place) => ({
+      name: place.name,
+      lat: place.lat,
+      lon: place.lon,
+    }));
     
     try {
       const response = await fetch('http://localhost:5000/save_places', {
@@ -70,6 +72,8 @@ function App() {
       });
       if (response.ok) {
         console.log('Data sent successfully');
+        // Optionally navigate to map page after saving places
+        window.location.href = `/map?places=${JSON.stringify(data)}`;
       } else {
         console.error('Failed to send data');
       }
@@ -80,31 +84,32 @@ function App() {
 
   return (
     <div className="App">
-      {/* Search Section */}
-      <SearchBar 
-        city={city} 
-        onCityChange={handleCityChange} 
-        onSearch={handleSearch} 
-        onKeyDown={handleKeyDown}
-      />
-
-      {/* Famous Places Section */}
-      {places.length > 0 && (
-        <PlacesList 
-          city = {city}
-          places={places} 
-          onAddPlace={handleAddPlace}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <SearchBar
+                city={city}
+                onCityChange={handleCityChange}
+                onSearch={handleSearch}
+                onKeyDown={handleKeyDown}
+              />
+              {places.length > 0 && (
+                <PlacesList city={city} places={places} onAddPlace={handleAddPlace} />
+              )}
+              {showPopup && (
+                <Popup
+                  selectedPlaces={selectedPlaces}
+                  onRemovePlace={handleRemovePlace}
+                  onGoToMap={handleGoToMap}
+                />
+              )}
+            </>
+          }
         />
-      )}
-
-      {/* Selected Places */}
-      {showPopup && (
-        <Popup 
-          selectedPlaces={selectedPlaces} 
-          onRemovePlace={handleRemovePlace} 
-          onGoToMap={handleGoToMap}
-        />
-      )}
+        <Route path="/map" element={<MapPage />} />
+      </Routes>
     </div>
   );
 }
