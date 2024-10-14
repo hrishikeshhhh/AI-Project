@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_050b2d86abcfc556cb913cf8bcc79f54 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_050b2d86abcfc556cb913cf8bcc79f54" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_050b2d86abcfc556cb913cf8bcc79f54 = L.map(
+                "map_050b2d86abcfc556cb913cf8bcc79f54",
+                {
+                    center: [48.8626413, 2.2969258],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f5d1f8a26a7f9a3cabf00163cc355571 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_f5d1f8a26a7f9a3cabf00163cc355571.addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+    
+            var marker_de9d0ac73f095eee6a5d330f2cb8ad1b = L.marker(
+                [48.8525003, 2.370342200000001],
+                {}
+            ).addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+    
+            var icon_1e9634b5c3f570dfe4951fd45a697d09 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_de9d0ac73f095eee6a5d330f2cb8ad1b.setIcon(icon_1e9634b5c3f570dfe4951fd45a697d09);
+        
+    
+        var popup_d45a0387763632a18ab9b95e969f5295 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cab24454fe400bda250da2f3bc33e3fc = $(`<div id="html_cab24454fe400bda250da2f3bc33e3fc" style="width: 100.0%; height: 100.0%;">Opéra Bastille</div>`)[0];
+                popup_d45a0387763632a18ab9b95e969f5295.setContent(html_cab24454fe400bda250da2f3bc33e3fc);
+            
+        
+
+        marker_de9d0ac73f095eee6a5d330f2cb8ad1b.bindPopup(popup_d45a0387763632a18ab9b95e969f5295)
+        ;
+
+        
+    
+    
+            var marker_99c1bb5dd7fcad0f8b1501cbd5fb9083 = L.marker(
+                [48.8626413, 2.2969258],
+                {}
+            ).addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+    
+            var icon_700bc499ad17da4a337c214d6834b4bc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_99c1bb5dd7fcad0f8b1501cbd5fb9083.setIcon(icon_700bc499ad17da4a337c214d6834b4bc);
+        
+    
+        var popup_09cd8dea48c6e6e0193c298db33cf8ac = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_55d00b5f90cb164695997d3ff76c4bdb = $(`<div id="html_55d00b5f90cb164695997d3ff76c4bdb" style="width: 100.0%; height: 100.0%;">Passerelle Debilly</div>`)[0];
+                popup_09cd8dea48c6e6e0193c298db33cf8ac.setContent(html_55d00b5f90cb164695997d3ff76c4bdb);
+            
+        
+
+        marker_99c1bb5dd7fcad0f8b1501cbd5fb9083.bindPopup(popup_09cd8dea48c6e6e0193c298db33cf8ac)
+        ;
+
+        
+    
+    
+            var marker_cfb05b44add0ae502ce10286fe2a2ff3 = L.marker(
+                [48.85336830000001, 2.3589476],
+                {}
+            ).addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+    
+            var icon_e0b8373ed03d338f7833ab7dedd7e3fa = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_cfb05b44add0ae502ce10286fe2a2ff3.setIcon(icon_e0b8373ed03d338f7833ab7dedd7e3fa);
+        
+    
+        var popup_5e8d2422402c2d320fd5fd4a9bb768c0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9d50d648d022ed2e3d220a0eb6470863 = $(`<div id="html_9d50d648d022ed2e3d220a0eb6470863" style="width: 100.0%; height: 100.0%;">Hôtel de Sens</div>`)[0];
+                popup_5e8d2422402c2d320fd5fd4a9bb768c0.setContent(html_9d50d648d022ed2e3d220a0eb6470863);
+            
+        
+
+        marker_cfb05b44add0ae502ce10286fe2a2ff3.bindPopup(popup_5e8d2422402c2d320fd5fd4a9bb768c0)
+        ;
+
+        
+    
+    
+            var marker_f1e711e1f58df5b0e3513074252f99d4 = L.marker(
+                [48.8626413, 2.2969258],
+                {}
+            ).addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+    
+            var icon_5bd630d0878d9207e831e810e6965f56 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "play", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_f1e711e1f58df5b0e3513074252f99d4.setIcon(icon_5bd630d0878d9207e831e810e6965f56);
+        
+    
+        var popup_698031eaab2457abf187ef49e050109c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_855549ae53d13385b6fcc13ace69919d = $(`<div id="html_855549ae53d13385b6fcc13ace69919d" style="width: 100.0%; height: 100.0%;">Start: Passerelle Debilly</div>`)[0];
+                popup_698031eaab2457abf187ef49e050109c.setContent(html_855549ae53d13385b6fcc13ace69919d);
+            
+        
+
+        marker_f1e711e1f58df5b0e3513074252f99d4.bindPopup(popup_698031eaab2457abf187ef49e050109c)
+        ;
+
+        
+    
+    
+            var marker_0a2ee16d2e3740b921c872010ec96f23 = L.marker(
+                [48.8525003, 2.370342200000001],
+                {}
+            ).addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+    
+            var icon_52a7118691a4b53ce3a822429e356579 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "stop", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_0a2ee16d2e3740b921c872010ec96f23.setIcon(icon_52a7118691a4b53ce3a822429e356579);
+        
+    
+        var popup_48f57b5934523f6b56e9f9eb52f2cba1 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a33cc76d8cf71343a6b21a3b33cf94b3 = $(`<div id="html_a33cc76d8cf71343a6b21a3b33cf94b3" style="width: 100.0%; height: 100.0%;">End: Opéra Bastille</div>`)[0];
+                popup_48f57b5934523f6b56e9f9eb52f2cba1.setContent(html_a33cc76d8cf71343a6b21a3b33cf94b3);
+            
+        
+
+        marker_0a2ee16d2e3740b921c872010ec96f23.bindPopup(popup_48f57b5934523f6b56e9f9eb52f2cba1)
+        ;
+
+        
+    
+    
+            var poly_line_81b7700c14d0a86ce61886d77c565bc7 = L.polyline(
+                [[48.86206, 2.29699], [48.86197, 2.29672], [48.86167, 2.29604], [48.86128, 2.29529], [48.86093, 2.29473], [48.86028, 2.29378], [48.86027, 2.29376], [48.86028, 2.29378], [48.8609, 2.29468], [48.86106, 2.29492], [48.86144, 2.2956], [48.86167, 2.29604], [48.86163, 2.29614], [48.86159, 2.29619], [48.86157, 2.29621], [48.86147, 2.29604], [48.86143, 2.29595], [48.86131, 2.29573], [48.86106, 2.29534], [48.86092, 2.29512], [48.86089, 2.29512], [48.86074, 2.29533], [48.8606, 2.29555], [48.86055, 2.29563], [48.86063, 2.29572], [48.86075, 2.29591], [48.8609, 2.29616], [48.86111, 2.29654], [48.86139, 2.29712], [48.86158, 2.29761], [48.86184, 2.29846], [48.86202, 2.29918], [48.86215, 2.29997], [48.86221, 2.30046], [48.86226, 2.30119], [48.86228, 2.30171], [48.86231, 2.30196], [48.86242, 2.30243], [48.86247, 2.30544], [48.86252, 2.30714], [48.86253, 2.30924], [48.86258, 2.31043], [48.8626, 2.31068], [48.86272, 2.31133], [48.86281, 2.31191], [48.86283, 2.31267], [48.86285, 2.31423], [48.86287, 2.31519], [48.86287, 2.31756], [48.86286, 2.31767], [48.86283, 2.31799], [48.86281, 2.31809], [48.86272, 2.31836], [48.86253, 2.31897], [48.86266, 2.31907], [48.863, 2.31931], [48.86338, 2.31958], [48.86388, 2.31992], [48.86405, 2.32023], [48.86465, 2.32063], [48.86466, 2.32088], [48.86471, 2.32104], [48.86481, 2.32118], [48.86535, 2.32158], [48.86562, 2.32176], [48.86598, 2.32197], [48.86606, 2.32198], [48.86616, 2.32196], [48.86625, 2.32189], [48.8663, 2.32181], [48.86632, 2.32176], [48.86634, 2.32147], [48.86632, 2.32134], [48.86627, 2.32121], [48.8662, 2.32112], [48.8659, 2.32087], [48.86522, 2.32037], [48.86509, 2.32029], [48.86497, 2.32027], [48.86483, 2.3203], [48.86476, 2.32034], [48.86444, 2.32014], [48.86413, 2.31995], [48.86405, 2.32023], [48.86355, 2.32175], [48.86338, 2.32227], [48.8629, 2.32381], [48.86242, 2.32527], [48.86094, 2.32989], [48.86085, 2.33021], [48.86071, 2.33071], [48.86051, 2.33161], [48.8602, 2.33304], [48.86013, 2.33335], [48.86004, 2.33377], [48.85958, 2.33577], [48.85938, 2.33663], [48.85934, 2.33695], [48.85925, 2.33799], [48.85913, 2.33907], [48.85899, 2.33998], [48.85869, 2.34162], [48.85854, 2.34243], [48.85827, 2.34338], [48.85767, 2.34558], [48.85744, 2.34644], [48.85681, 2.34865], [48.85652, 2.3495], [48.85609, 2.35071], [48.85579, 2.35147], [48.85553, 2.35217], [48.85538, 2.35264], [48.85531, 2.35282], [48.85519, 2.353], [48.85461, 2.35446], [48.8544, 2.35497], [48.85451, 2.35507], [48.85492, 2.35547], [48.8554, 2.35595], [48.85567, 2.35621], [48.85584, 2.35637], [48.85579, 2.35671], [48.85574, 2.35691], [48.8555, 2.35772], [48.85555, 2.35776], [48.85548, 2.3586], [48.85536, 2.35959], [48.85453, 2.35886], [48.85453, 2.35882], [48.8545, 2.3588], [48.85437, 2.3587], [48.85394, 2.35833], [48.85358, 2.35802], [48.85353, 2.35815], [48.85335, 2.35866], [48.85332, 2.35889]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+    
+            var poly_line_3b3a1e7248ce7d883defbde610c7e538 = L.polyline(
+                [[48.85332, 2.35894], [48.85332, 2.35912], [48.85332, 2.3593], [48.85338, 2.35939], [48.8535, 2.35927], [48.85384, 2.35908], [48.85393, 2.35905], [48.85404, 2.35906], [48.85432, 2.35911], [48.8544, 2.35918], [48.85442, 2.35914], [48.85453, 2.35886], [48.85453, 2.35882], [48.8545, 2.3588], [48.85437, 2.3587], [48.85356, 2.35801], [48.85333, 2.35782], [48.85324, 2.35806], [48.85291, 2.35897], [48.85278, 2.3593], [48.85259, 2.35984], [48.85237, 2.36049], [48.8522, 2.36087], [48.85208, 2.36099], [48.85185, 2.36129], [48.85168, 2.3614], [48.85151, 2.36142], [48.85113, 2.36143], [48.85084, 2.36144], [48.85106, 2.3622], [48.85116, 2.36253], [48.85127, 2.36286], [48.85152, 2.36368], [48.85224, 2.36608], [48.85262, 2.36739], [48.85281, 2.36805], [48.8529, 2.3684], [48.85311, 2.36854], [48.85333, 2.36863], [48.85342, 2.36868], [48.8535, 2.36877], [48.85354, 2.36887], [48.85357, 2.36918], [48.85355, 2.36938], [48.85349, 2.36953], [48.85338, 2.36964], [48.85328, 2.3697], [48.85328, 2.37023], [48.85316, 2.37029], [48.85304, 2.3704], [48.85299, 2.37041], [48.85274, 2.37066]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_050b2d86abcfc556cb913cf8bcc79f54);
+        
+</script>
+</html>
