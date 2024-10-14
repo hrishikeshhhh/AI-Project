@@ -160,7 +160,7 @@ def visualize_route(route):
             path = polyline.decode(directions[0]['overview_polyline']['points'])
             folium.PolyLine(path, weight=2, color='red', opacity=0.8).add_to(map)
 
-    map.save("Astar-Path.html")
+    map.save("Astar_route.html")
 
 # Main execution
 best_path, best_distance = optimize_tsp(places)
@@ -171,3 +171,4 @@ for place in best_path:
 
 full_route = get_full_route(best_path)
 visualize_route(full_route)
+print("Route visualization saved as 'Astar_route.html'")

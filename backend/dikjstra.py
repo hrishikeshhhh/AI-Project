@@ -1,16 +1,38 @@
-import folium, googlemaps, polyline, math, backend.creds as creds, json
-from folium import plugins
+import folium
+import googlemaps
+import polyline
+import math
+import json
+import os
+import creds
+from datetime import datetime
+from datetime import datetime
+from itertools import permutations
 
+folder_path = './data'
+file_path = os.path.join(folder_path, 'selected_places.json')
 # Load places from selected_places.json
-with open('selected_places.json') as f:
+with open(file_path) as f:
     places = json.load(f)
 
-# Initialize Google Maps Client with your API key
 gmaps = googlemaps.Client(key=creds.api_key)
 
-#Haversine Distance Between places
+def get_road_distance(place1, place2):
+
+    result = gmaps.directions(
+        f"{place1['lat']},{place1['lon']}",
+        f"{place2['lat']},{place2['lon']}",
+        mode="driving",
+        departure_time=datetime.now()
+    )
+    
+    if result:
+        return result[0]['legs'][0]['distance']['value'] / 1000  # Convert meters to kilometers
+    else:
+        return haversine_distance(place1['lat'], place1['lon'], place2['lat'], place2['lon'])
+
 def haversine_distance(lat1, lon1, lat2, lon2):
-    R = 6371  # Earth's radius in kilometers
+    R = 6371 
 
     phi1 = math.radians(lat1)
     phi2 = math.radians(lat2)
@@ -22,95 +44,95 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 
     return R * c
 
-
-# Dijkstra's algorithm
-def dijkstra(start_place):
-    # Initialize distances and previous nodes
+def dijkstra(start_place, end_place):
     distances = {place["name"]: float("inf") for place in places}
     previous = {place["name"]: None for place in places}
     distances[start_place["name"]] = 0
+    unvisited = set(place["name"] for place in places)
 
-    # Create a priority queue
-    pq = [(0, start_place["name"])]
+    while unvisited:
+        current_name = min(unvisited, key=lambda x: distances[x])
+        current_place = next(place for place in places if place["name"] == current_name)
+        unvisited.remove(current_name)
 
-    while pq:
-        current_dist, current_place_name = pq.pop(0)
-        current_place = next(place for place in places if place["name"] == current_place_name)
-
-        if current_dist > distances[current_place_name]:
-            continue
+        if current_name == end_place["name"]:
+            break
 
         for neighbor in places:
-            if neighbor["name"] == current_place_name:
-                continue
-
-            distance = haversine_distance(
-                current_place["lat"], current_place["lon"], neighbor["lat"], neighbor["lon"]
-            )
-
-            new_distance = current_dist + distance
-            if new_distance < distances[neighbor["name"]]:
-                distances[neighbor["name"]] = new_distance
-                previous[neighbor["name"]] = current_place
-                pq.append((new_distance, neighbor["name"]))
-    return distances, previous
+            if neighbor["name"] in unvisited:
+                distance = get_road_distance(current_place, neighbor)
+                new_distance = distances[current_name] + distance
+                if new_distance < distances[neighbor["name"]]:
+                    distances[neighbor["name"]] = new_distance
+                    previous[neighbor["name"]] = current_place
 
 
-def visualize_dijkstra(start_place, previous):
-    start_coords = (start_place["lat"], start_place["lon"])
+    path = []
+    current = end_place
+    while current:
+        path.append(current)
+        current = previous[current["name"]]
+    return list(reversed(path))
+
+def find_shortest_route():
+    unvisited = places[1:]
+    route = [places[0]]
+    total_distance = 0
+
+    while unvisited:
+        last = route[-1]
+        nearest = min(unvisited, key=lambda x: get_road_distance(last, x))
+        path = dijkstra(last, nearest)
+        route.extend(path[1:])  # Exclude the first point to avoid duplication
+        total_distance += sum(get_road_distance(path[i], path[i+1]) for i in range(len(path)-1))
+        unvisited.remove(nearest)
+
+    return route, total_distance
+
+def visualize_route(route):
+    start_coords = (route[0]["lat"], route[0]["lon"])
     map = folium.Map(location=start_coords, zoom_start=5)
 
-    marker_group = folium.FeatureGroup(name="Markers")
-    polyline_group = folium.FeatureGroup(name="Polylines")
-    # Add the start marker
-    start_marker = folium.Marker(start_coords, tooltip=start_place["name"], icon=folium.Icon(color="green"))
-    marker_group.add_child(start_marker)
 
-    # Add markers for the remaining places
-    for place in places:
-        if place["name"] != start_place["name"]:
-            coords = (place["lat"], place["lon"])
-            marker = folium.Marker(coords, tooltip=place["name"])
-            marker_group.add_child(marker)
+    for i, place in enumerate(route):
+        folium.Marker(
+            [place['lat'], place['lon']],
+            popup=f"{i+1}. {place['name']}",
+            icon=folium.Icon(color='blue', icon='info-sign')
+        ).add_to(map)
 
-    map.add_child(marker_group)
-    map.add_child(polyline_group)
-    # Simulate the steps of Dijkstra's algorithm
-    visited = set()
-    current_place = start_place
-    visited.add(current_place["name"])
 
-    while True:
-        # Find the nearest unvisited neighbor
-        min_distance = float("inf")
-        nearest_neighbor = None
+    folium.Marker(
+        [route[0]['lat'], route[0]['lon']],
+        popup=f"Start: {route[0]['name']}",
+        icon=folium.Icon(color='green', icon='play')
+    ).add_to(map)
+    folium.Marker(
+        [route[-1]['lat'], route[-1]['lon']],
+        popup=f"End: {route[-1]['name']}",
+        icon=folium.Icon(color='red', icon='stop')
+    ).add_to(map)
 
-        for neighbor in places:
-            if neighbor["name"] not in visited:
-                distance = haversine_distance(
-                    current_place["lat"], current_place["lon"], neighbor["lat"], neighbor["lon"]
-                )
-                if distance < min_distance:
-                    min_distance = distance
-                    nearest_neighbor = neighbor
 
-        # If all places have been visited, break out of the loop
-        if nearest_neighbor is None:
-            break
-        # Draw the polyline from the current place to the nearest neighbor
-        coords1 = (current_place["lat"], current_place["lon"])
-        coords2 = (nearest_neighbor["lat"], nearest_neighbor["lon"])
-        polyline = folium.PolyLine([coords1, coords2], color="red", weight=2.5, opacity=1)
-        polyline_group.add_child(polyline)
+    for i in range(len(route) - 1):
+        start = route[i]
+        end = route[i+1]
+        directions = gmaps.directions(
+            f"{start['lat']},{start['lon']}",
+            f"{end['lat']},{end['lon']}",
+            mode="driving"
+        )
+        if directions:
+            path = polyline.decode(directions[0]['overview_polyline']['points'])
+            folium.PolyLine(path, weight=2, color='red', opacity=0.8).add_to(map)
 
-        # Update the current place and visited set
-        current_place = nearest_neighbor
-        visited.add(current_place["name"])
+    map.save("dijkstra_route.html")
 
-    # display the map
-    map.save("dijkstra_visualization.html")
+route, total_distance = find_shortest_route()
+visualize_route(route)
 
-# Example usage
-start_place = places[0]
-distances, previous = dijkstra(start_place)
-visualize_dijkstra(start_place, previous)
+print("Shortest route:")
+for i, place in enumerate(route):
+    print(f"{i+1}. {place['name']}")
+print(f"Total distance: {total_distance:.2f} km")
+print("Route visualization saved as 'dijkstra_route.html'")
