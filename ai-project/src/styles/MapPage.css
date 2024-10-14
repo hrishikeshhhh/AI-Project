@@ -1,0 +1,77 @@
+.map-page-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 25%;
+    padding: 20px;
+    background-color: #f7f7f7;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+  }
+  
+  .route-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .route-buttons h2 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+  
+  .route-buttons button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .route-buttons button:hover {
+    background-color: #45a049;
+  }
+  
+  .route-info {
+    margin-bottom: 20px;
+  }
+  
+  .route-info h2 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+  
+  .route-info p {
+    margin: 5px 0;
+  }
+  
+  .places-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .place-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .place-item h3 {
+    margin: 0 0 5px;
+  }
+  
+  .place-item p {
+    margin: 0;
+  }
+  
+  .map {
+    width: 75%;
+    height: 100vh;
+  }
+  
