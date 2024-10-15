@@ -9,11 +9,13 @@ import heapq
 from datetime import datetime
 from itertools import permutations
 
-folder_path = './data'
-file_path = os.path.join(folder_path, 'selected_places.json')
-# Load places from selected_places.json
-with open(file_path) as f:
-    places = json.load(f)
+def load_data():
+    folder_path = './data'
+    file_path = os.path.join(folder_path, 'selected_places.json')
+    # Load places from selected_places.json
+    with open(file_path) as f:
+        places = json.load(f)
+    return places
 
 gmaps = googlemaps.Client(key=creds.api_key)
 
@@ -50,19 +52,19 @@ def astar(start_place, goal_place):
     open_set = []
     heapq.heappush(open_set, (0, start_place['name']))
     came_from = {}
-    g_score = {place['name']: float('inf') for place in places}
+    g_score = {place['name']: float('inf') for place in load_data()}
     g_score[start_place['name']] = 0
-    f_score = {place['name']: float('inf') for place in places}
+    f_score = {place['name']: float('inf') for place in load_data()}
     f_score[start_place['name']] = heuristic(start_place, goal_place)
 
     while open_set:
         current_name = heapq.heappop(open_set)[1]
-        current = next(place for place in places if place['name'] == current_name)
+        current = next(place for place in load_data() if place['name'] == current_name)
 
         if current['name'] == goal_place['name']:
             return reconstruct_path(came_from, current)
 
-        for neighbor in places:
+        for neighbor in load_data():
             if neighbor['name'] == current['name']:
                 continue
 
@@ -125,7 +127,7 @@ def visualize_route(route):
     map = folium.Map(location=start_coords, zoom_start=5)
 
     # Add markers for all places
-    for place in places:
+    for place in load_data():
         folium.Marker(
             [place['lat'], place['lon']],
             popup=place['name'],
@@ -163,12 +165,18 @@ def visualize_route(route):
     map.save("Astar_route.html")
 
 # Main execution
-best_path, best_distance = optimize_tsp(places)
-print(f"Best tour distance: {best_distance:.2f} km")
-print("Best tour:")
-for place in best_path:
-    print(place['name'])
+# best_path, best_distance = optimize_tsp(places)
+# print(f"Best tour distance: {best_distance:.2f} km")
+# print("Best tour:")
+# for place in best_path:
+#     print(place['name'])
 
-full_route = get_full_route(best_path)
-visualize_route(full_route)
-print("Route visualization saved as 'Astar_route.html'")
+# full_route = get_full_route(best_path)
+# visualize_route(full_route)
+# print("Route visualization saved as 'Astar_route.html'")
+
+# To get the work done for A* 
+# 1. optimize_tsp function is used to find the best path to visit all the places (returns which place to visit first)
+# 2. astar function is used to find the shortest path between two places
+# 3. get_full_route function is used to get the full route by connecting all the places
+# 4. visualize_route function is used to visualize the route on a map and save it as an HTML file

@@ -3,6 +3,7 @@ import googlemaps
 from flask_cors import CORS
 import creds
 import os
+from astar import optimize_tsp, get_full_route, astar
 
 app = Flask(__name__)
 CORS(app)
@@ -16,7 +17,8 @@ def get_places():
     
     if geocode_result:
         city_location = geocode_result[0]['geometry']['location']
-        places_result = gmaps.places_nearby(location=city_location, radius=5000, type='tourist_attraction')
+        places_result = gmaps.places_nearby(location=city_location, radius=5000, type='tourist_attraction', rank_by='prominence')
+
         
         places = []
         for place in places_result['results']:
@@ -50,6 +52,26 @@ def save_places():
         f.write(json.dumps(data))
 
     return jsonify({'message': 'Places saved successfully!'})
+
+@app.route('/astar', methods=['POST']) 
+def optimize_route():
+    places = request.json
+    
+    best_path, best_distance = optimize_tsp(places)
+    full_route = get_full_route(best_path)
+
+    route = [{'name': place['name'], 'lat': place['lat'], 'lon': place['lon']} for place in best_path]
+    return jsonify({
+        'optimized_route': route,
+        'total_distance': f"{best_distance:.2f} km",
+        'full_route': full_route
+    })
+
+@app.route('/dijkstra', methods=['POST'])
+def dijkstra():
+    # places = request.json
+    # full_route = get_full_route(places)
+    return jsonify({'Dummy Value'})
 
 if __name__ == '__main__':
     app.run(debug=True)
