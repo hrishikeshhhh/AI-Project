@@ -9,11 +9,12 @@ from datetime import datetime
 from datetime import datetime
 from itertools import permutations
 
-folder_path = './data'
-file_path = os.path.join(folder_path, 'selected_places.json')
-# Load places from selected_places.json
-with open(file_path) as f:
-    places = json.load(f)
+def load_data():
+    folder_path = './data'
+    file_path = os.path.join(folder_path, 'selected_places.json')
+    with open(file_path) as f:
+        places = json.load(f)
+    return places
 
 gmaps = googlemaps.Client(key=creds.api_key)
 
@@ -45,20 +46,20 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return R * c
 
 def dijkstra(start_place, end_place):
-    distances = {place["name"]: float("inf") for place in places}
-    previous = {place["name"]: None for place in places}
+    distances = {place["name"]: float("inf") for place in load_data()}
+    previous = {place["name"]: None for place in load_data()}
     distances[start_place["name"]] = 0
-    unvisited = set(place["name"] for place in places)
+    unvisited = set(place["name"] for place in load_data())
 
     while unvisited:
         current_name = min(unvisited, key=lambda x: distances[x])
-        current_place = next(place for place in places if place["name"] == current_name)
+        current_place = next(place for place in load_data() if place["name"] == current_name)
         unvisited.remove(current_name)
 
         if current_name == end_place["name"]:
             break
 
-        for neighbor in places:
+        for neighbor in load_data():
             if neighbor["name"] in unvisited:
                 distance = get_road_distance(current_place, neighbor)
                 new_distance = distances[current_name] + distance
@@ -75,8 +76,8 @@ def dijkstra(start_place, end_place):
     return list(reversed(path))
 
 def find_shortest_route():
-    unvisited = places[1:]
-    route = [places[0]]
+    unvisited = load_data()[1:]
+    route = [load_data()[0]]
     total_distance = 0
 
     while unvisited:
@@ -128,11 +129,11 @@ def visualize_route(route):
 
     map.save("dijkstra_route.html")
 
-route, total_distance = find_shortest_route()
-visualize_route(route)
+# route, total_distance = find_shortest_route()
+# visualize_route(route)
 
-print("Shortest route:")
-for i, place in enumerate(route):
-    print(f"{i+1}. {place['name']}")
-print(f"Total distance: {total_distance:.2f} km")
-print("Route visualization saved as 'dijkstra_route.html'")
+# print("Shortest route:")
+# for i, place in enumerate(route):
+#     print(f"{i+1}. {place['name']}")
+# print(f"Total distance: {total_distance:.2f} km")
+# print("Route visualization saved as 'dijkstra_route.html'")

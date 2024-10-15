@@ -103,7 +103,7 @@ const MapPage = () => {
         body: JSON.stringify(places),
       });
       const data = await response.json();
-      displayRoute(data.full_route, 'Dijkstra Route');
+      displayRoute(data.route, 'Dijkstra Route');
     } catch (error) {
       console.error('Error fetching Dijkstra Route:', error);
     }

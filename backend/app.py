@@ -3,7 +3,8 @@ import googlemaps
 from flask_cors import CORS
 import creds
 import os
-from astar import optimize_tsp, get_full_route, astar
+from astar import optimize_tsp, get_full_route
+from dijkstra import find_shortest_route
 
 app = Flask(__name__)
 CORS(app)
@@ -70,8 +71,14 @@ def optimize_route():
 @app.route('/dijkstra', methods=['POST'])
 def dijkstra():
     # places = request.json
-    # full_route = get_full_route(places)
-    return jsonify({'Dummy Value'})
+    route, total_distance = find_shortest_route()
+    # print('Route: ' +route)
+    # print('Total Distance: ' +total_distance)
+
+    return jsonify({
+        'route': route,
+        'total_distance': f"{total_distance:.2f} km"
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
