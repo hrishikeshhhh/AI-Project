@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../styles/MapPage.css';
+import Loader from './Loader';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const MapPage = () => {
   const location = useLocation();
@@ -16,6 +18,9 @@ const MapPage = () => {
   const [map, setMap] = useState(null);
   const [directionsService, setDirectionsService] = useState(null);
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
+  const [updatedPlaces, setUpdatedPlaces] = useState([]);
+  const [loading, setLoading] = useState(false);
+
 
   const initializeMap = useCallback(() => {
     if (!map) {
@@ -72,8 +77,7 @@ const MapPage = () => {
       }, (result, status) => {
         if (status === 'OK') {
           directionsRenderer.setDirections(result);
-          
-          // Calculate total distance and duration
+
           let totalDistance = 0;
           let totalDuration = 0;
           result.routes[0].legs.forEach((leg) => {
@@ -94,6 +98,7 @@ const MapPage = () => {
   }, [directionsService, directionsRenderer]);
 
   const handleFastestRoute = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:5000/dijkstra', {
         method: 'POST',
@@ -104,12 +109,16 @@ const MapPage = () => {
       });
       const data = await response.json();
       displayRoute(data.route, 'Dijkstra Route');
+      setUpdatedPlaces(data.route);
     } catch (error) {
       console.error('Error fetching Dijkstra Route:', error);
+    } finally {
+      setLoading(false);
     }
   }, [places, displayRoute]);
 
   const handleShortestRoute = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:5000/astar', {
         method: 'POST',
@@ -120,38 +129,71 @@ const MapPage = () => {
       });
       const data = await response.json();
       displayRoute(data.full_route, 'A* Route');
+      setUpdatedPlaces(data.full_route);
     } catch (error) {
       console.error('Error fetching A* Route:', error);
+    } finally {
+      setLoading(false);
     }
   }, [places, displayRoute]);
 
+  const Timeline = ({ places }) => (
+    <div className="timeline">
+      {/* Start marker */}
+      <div className="timeline-item">
+        <div className="timeline-content start-end">
+          <h3>START</h3>
+        </div>
+      </div>
+  
+      {/* Main timeline stops */}
+      {places.map((place, index) => (
+        <div key={index} className="timeline-item">
+          <div className="timeline-content">
+            <h3>{place.name}</h3>
+          </div>
+        </div>
+      ))}
+  
+      {/* End marker */}
+      <div className="timeline-item">
+        <div className="timeline-content start-end">
+          <h3>END</h3>
+        </div>
+      </div>
+    </div>
+  );  
+
   return (
     <div className="map-page-container">
+      {/* Loader */}
+      {loading && <Loader />}
+
       {/* Sidebar */}
       <div className="sidebar">
         {/* Route options */}
         <div className="route-buttons">
           <h2>Select Route</h2>
-          <button onClick={handleFastestRoute}>Dijkstra Route</button>
-          <button onClick={handleShortestRoute}>A* Route</button>
+          <div className='route-buttons-container'>
+            <button onClick={handleFastestRoute}>
+              <i className="fas fa-tachometer-alt"></i> Dijkstra Route
+            </button>
+            <button onClick={handleShortestRoute}>
+              <i className="fas fa-location-arrow"></i> A* Route
+            </button>
+          </div>
         </div>
 
         {/* Route Information */}
         <div className="route-info">
           <h2>Route Information</h2>
-          <p><strong>Route Type:</strong> {routeInfo.type}</p>
-          <p><strong>Total Time:</strong> {routeInfo.time}</p>
-          <p><strong>Total Distance:</strong> {routeInfo.distance}</p>
+          <p className="route-type"><i className="fas fa-route"></i> <strong>Route Type:</strong> {routeInfo.type}</p>
+          <p className="route-time"><i className="far fa-clock"></i> <strong>Total Time:</strong> {routeInfo.time}</p>
+          <p className="route-distance"><i className="fas fa-road"></i> <strong>Total Distance:</strong> {routeInfo.distance}</p>
         </div>
 
-        {/* List of Places */}
-        <ul className="places-list">
-          {places.map((place, index) => (
-            <li key={index} className="place-item">
-              <h3>{index + 1}. {place.name}</h3>
-            </li>
-          ))}
-        </ul>
+        {/* Timeline */}
+        <Timeline places={updatedPlaces.length > 0 ? updatedPlaces : places} />
       </div>
 
       {/* Map */}
