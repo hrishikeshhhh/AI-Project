@@ -1,13 +1,10 @@
-import folium
 import googlemaps
-import polyline
 import math
 import json
 import os
 import creds
 from datetime import datetime
 from datetime import datetime
-from itertools import permutations
 
 def load_data():
     folder_path = './data'
@@ -84,56 +81,8 @@ def find_shortest_route():
         last = route[-1]
         nearest = min(unvisited, key=lambda x: get_road_distance(last, x))
         path = dijkstra(last, nearest)
-        route.extend(path[1:])  # Exclude the first point to avoid duplication
+        route.extend(path[1:]) 
         total_distance += sum(get_road_distance(path[i], path[i+1]) for i in range(len(path)-1))
         unvisited.remove(nearest)
 
     return route, total_distance
-
-def visualize_route(route):
-    start_coords = (route[0]["lat"], route[0]["lon"])
-    map = folium.Map(location=start_coords, zoom_start=5)
-
-
-    for i, place in enumerate(route):
-        folium.Marker(
-            [place['lat'], place['lon']],
-            popup=f"{i+1}. {place['name']}",
-            icon=folium.Icon(color='blue', icon='info-sign')
-        ).add_to(map)
-
-
-    folium.Marker(
-        [route[0]['lat'], route[0]['lon']],
-        popup=f"Start: {route[0]['name']}",
-        icon=folium.Icon(color='green', icon='play')
-    ).add_to(map)
-    folium.Marker(
-        [route[-1]['lat'], route[-1]['lon']],
-        popup=f"End: {route[-1]['name']}",
-        icon=folium.Icon(color='red', icon='stop')
-    ).add_to(map)
-
-
-    for i in range(len(route) - 1):
-        start = route[i]
-        end = route[i+1]
-        directions = gmaps.directions(
-            f"{start['lat']},{start['lon']}",
-            f"{end['lat']},{end['lon']}",
-            mode="driving"
-        )
-        if directions:
-            path = polyline.decode(directions[0]['overview_polyline']['points'])
-            folium.PolyLine(path, weight=2, color='red', opacity=0.8).add_to(map)
-
-    map.save("dijkstra_route.html")
-
-# route, total_distance = find_shortest_route()
-# visualize_route(route)
-
-# print("Shortest route:")
-# for i, place in enumerate(route):
-#     print(f"{i+1}. {place['name']}")
-# print(f"Total distance: {total_distance:.2f} km")
-# print("Route visualization saved as 'dijkstra_route.html'")

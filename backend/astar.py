@@ -1,18 +1,14 @@
-import folium
 import googlemaps
-import polyline
 import math
 import os
 import creds
 import json
 import heapq
 from datetime import datetime
-from itertools import permutations
 
 def load_data():
     folder_path = './data'
     file_path = os.path.join(folder_path, 'selected_places.json')
-    # Load places from selected_places.json
     with open(file_path) as f:
         places = json.load(f)
     return places
@@ -121,62 +117,3 @@ def get_full_route(path):
             full_route.extend(segment[:-1]) 
     full_route.append(path[-1])  
     return full_route
-
-def visualize_route(route):
-    start_coords = (route[0]['lat'], route[0]['lon'])
-    map = folium.Map(location=start_coords, zoom_start=5)
-
-    # Add markers for all places
-    for place in load_data():
-        folium.Marker(
-            [place['lat'], place['lon']],
-            popup=place['name'],
-            icon=folium.Icon(color='blue', icon='info-sign')
-        ).add_to(map)
-
-    # start and end points
-    folium.Marker(
-        [route[0]['lat'], route[0]['lon']],
-        popup=f"Start: {route[0]['name']}",
-        icon=folium.Icon(color='green', icon='play')
-    ).add_to(map)
-    folium.Marker(
-        [route[-1]['lat'], route[-1]['lon']],
-        popup=f"End: {route[-1]['name']}",
-        icon=folium.Icon(color='red', icon='stop')
-    ).add_to(map)
-
-    # route
-    for i in range(len(route) - 1):
-        start = route[i]
-        end = route[i+1]
-        
-        # Get directions between two points
-        directions = gmaps.directions(
-            f"{start['lat']},{start['lon']}",
-            f"{end['lat']},{end['lon']}",
-            mode="driving"
-        )
-        
-        if directions:
-            path = polyline.decode(directions[0]['overview_polyline']['points'])
-            folium.PolyLine(path, weight=2, color='red', opacity=0.8).add_to(map)
-
-    map.save("Astar_route.html")
-
-# Main execution
-# best_path, best_distance = optimize_tsp(places)
-# print(f"Best tour distance: {best_distance:.2f} km")
-# print("Best tour:")
-# for place in best_path:
-#     print(place['name'])
-
-# full_route = get_full_route(best_path)
-# visualize_route(full_route)
-# print("Route visualization saved as 'Astar_route.html'")
-
-# To get the work done for A* 
-# 1. optimize_tsp function is used to find the best path to visit all the places (returns which place to visit first)
-# 2. astar function is used to find the shortest path between two places
-# 3. get_full_route function is used to get the full route by connecting all the places
-# 4. visualize_route function is used to visualize the route on a map and save it as an HTML file
