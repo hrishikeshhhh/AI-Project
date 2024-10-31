@@ -1,28 +1,27 @@
 from utils import load_data, get_road_distance
 
-
 def dijkstra(start_place, end_place):
-    distances = {place["name"]: float("inf") for place in load_data()}
-    previous = {place["name"]: None for place in load_data()}
+    data = load_data()
+    distances = {place["name"]: float("inf") for place in data}
+    previous = {place["name"]: None for place in data}
     distances[start_place["name"]] = 0
-    unvisited = set(place["name"] for place in load_data())
+    unvisited = set(place["name"] for place in data)
 
     while unvisited:
         current_name = min(unvisited, key=lambda x: distances[x])
-        current_place = next(place for place in load_data() if place["name"] == current_name)
+        current_place = next(place for place in data if place["name"] == current_name)
         unvisited.remove(current_name)
 
         if current_name == end_place["name"]:
             break
 
-        for neighbor in load_data():
+        for neighbor in data:
             if neighbor["name"] in unvisited:
                 distance = get_road_distance(current_place, neighbor)
                 new_distance = distances[current_name] + distance
                 if new_distance < distances[neighbor["name"]]:
                     distances[neighbor["name"]] = new_distance
                     previous[neighbor["name"]] = current_place
-
 
     path = []
     current = end_place
@@ -32,16 +31,20 @@ def dijkstra(start_place, end_place):
     return list(reversed(path))
 
 def find_shortest_route():
-    unvisited = load_data()[1:]
-    route = [load_data()[0]]
+    data = load_data()
+    route = []
     total_distance = 0
 
-    while unvisited:
-        last = route[-1]
-        nearest = min(unvisited, key=lambda x: get_road_distance(last, x))
-        path = dijkstra(last, nearest)
-        route.extend(path[1:]) 
-        total_distance += sum(get_road_distance(path[i], path[i+1]) for i in range(len(path)-1))
-        unvisited.remove(nearest)
+    for i in range(len(data) - 1):
+        start_place = data[i]
+        end_place = data[i + 1]
+        segment = dijkstra(start_place, end_place)
+        
+        if segment:
+            if route:  # Avoid duplicating places between segments
+                route.extend(segment[1:])
+            else:
+                route.extend(segment)
+            total_distance += sum(get_road_distance(segment[j], segment[j + 1]) for j in range(len(segment) - 1))
 
     return route, total_distance

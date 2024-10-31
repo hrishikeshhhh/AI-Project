@@ -5,6 +5,7 @@ import creds
 import os
 from astar import optimize_tsp, get_full_route
 from dijkstra import find_shortest_route
+from utils import load_data
 
 app = Flask(__name__)
 CORS(app)
@@ -15,30 +16,21 @@ gmaps = googlemaps.Client(key=creds.api_key)
 def get_places():
     city = request.args.get('city')
     geocode_result = gmaps.geocode(city)
-    
+
     if geocode_result:
         city_location = geocode_result[0]['geometry']['location']
         places_result = gmaps.places_nearby(location=city_location, radius=5000, type='tourist_attraction', rank_by='prominence')
 
-        
-        places = []
-        for place in places_result['results']:
-            photo_url = None
-            if 'photos' in place:
-                photo_reference = place['photos'][0]['photo_reference']
-                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={creds.api_key}"
-            
-            places.append({
-                'name': place['name'],
-                'lat': place['geometry']['location']['lat'],
-                'lon': place['geometry']['location']['lng'],
-                'image': photo_url
-            })
+        places = [{
+            'name': place['name'],
+            'lat': place['geometry']['location']['lat'],
+            'lon': place['geometry']['location']['lng'],
+            'image': f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={place['photos'][0]['photo_reference']}&key={creds.api_key}" if 'photos' in place else None
+        } for place in places_result['results']]
 
         return jsonify({'places': places})
-    else:
-        return jsonify({'error': 'City not found'}), 404
-    
+    return jsonify({'error': 'City not found'}), 404
+
 @app.route('/save_places', methods=['POST'])
 def save_places():
     data = request.json
@@ -48,7 +40,6 @@ def save_places():
         os.makedirs(folder_path)
 
     file_path = os.path.join(folder_path, 'selected_places.json')
-
     with open(file_path, 'w') as f:
         f.write(json.dumps(data))
 
@@ -57,7 +48,6 @@ def save_places():
 @app.route('/astar', methods=['POST']) 
 def optimize_route():
     places = request.json
-    
     best_path, best_distance = optimize_tsp(places)
     full_route = get_full_route(best_path)
 
@@ -73,9 +63,10 @@ def dijkstra():
     route, total_distance = find_shortest_route()
 
     return jsonify({
-        'route': route,
+        'route': [{'name': place['name'], 'lat': place['lat'], 'lon': place['lon']} for place in route],
         'total_distance': f"{total_distance:.2f} km"
     })
+
 
 if __name__ == '__main__':
     app.run(debug=True)

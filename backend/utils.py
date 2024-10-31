@@ -15,8 +15,7 @@ def load_data():
         return json.load(f)
 
 def haversine_distance(lat1, lon1, lat2, lon2):
-    R = 6371  
-
+    R = 6371
     phi1 = math.radians(lat1)
     phi2 = math.radians(lat2)
     delta_phi = math.radians(lat2 - lat1)
@@ -28,6 +27,10 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return R * c
 
 def get_road_distance(place1, place2):
+    key = (place1['name'], place2['name'])
+    if key in distance_cache:
+        return distance_cache[key]
+
     result = gmaps.directions(
         f"{place1['lat']},{place1['lon']}",
         f"{place2['lat']},{place2['lon']}",
@@ -35,7 +38,6 @@ def get_road_distance(place1, place2):
         departure_time=datetime.now()
     )
     
-    if result:
-        return result[0]['legs'][0]['distance']['value'] / 1000 
-    else:
-        return haversine_distance(place1['lat'], place1['lon'], place2['lat'], place2['lon'])
+    distance = (result[0]['legs'][0]['distance']['value'] / 1000) if result else haversine_distance(place1['lat'], place1['lon'], place2['lat'], place2['lon'])
+    distance_cache[key] = distance
+    return distance

@@ -1,28 +1,27 @@
 import heapq
 from utils import load_data, get_road_distance, haversine_distance
 
-
 def heuristic(place1, place2):
     return haversine_distance(place1['lat'], place1['lon'], place2['lat'], place2['lon'])
 
-
 def astar(start_place, goal_place):
+    data = load_data()
     open_set = []
     heapq.heappush(open_set, (0, start_place['name']))
     came_from = {}
-    g_score = {place['name']: float('inf') for place in load_data()}
+    g_score = {place['name']: float('inf') for place in data}
     g_score[start_place['name']] = 0
-    f_score = {place['name']: float('inf') for place in load_data()}
+    f_score = {place['name']: float('inf') for place in data}
     f_score[start_place['name']] = heuristic(start_place, goal_place)
 
     while open_set:
         current_name = heapq.heappop(open_set)[1]
-        current = next(place for place in load_data() if place['name'] == current_name)
+        current = next(place for place in data if place['name'] == current_name)
 
         if current['name'] == goal_place['name']:
             return reconstruct_path(came_from, current)
 
-        for neighbor in load_data():
+        for neighbor in data:
             if neighbor['name'] == current['name']:
                 continue
 
@@ -59,8 +58,7 @@ def nearest_neighbor_tsp(places):
     return path, total_distance
 
 def optimize_tsp(places):
-    best_path = None
-    best_distance = float('inf')
+    best_path, best_distance = None, float('inf')
 
     for start in places:
         rotated_places = places[places.index(start):] + places[:places.index(start)]
@@ -74,8 +72,8 @@ def optimize_tsp(places):
 def get_full_route(path):
     full_route = []
     for i in range(len(path) - 1):
-        segment = astar(path[i], path[i+1])
+        segment = astar(path[i], path[i + 1])
         if segment:
-            full_route.extend(segment[:-1]) 
-    full_route.append(path[-1])  
+            full_route.extend(segment[:-1])
+    full_route.append(path[-1])
     return full_route
