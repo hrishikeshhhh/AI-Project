@@ -1,46 +1,5 @@
-import googlemaps
-import math
-import json
-import os
-import creds
-from datetime import datetime
-from datetime import datetime
+from utils import load_data, get_road_distance
 
-def load_data():
-    folder_path = './data'
-    file_path = os.path.join(folder_path, 'selected_places.json')
-    with open(file_path) as f:
-        places = json.load(f)
-    return places
-
-gmaps = googlemaps.Client(key=creds.api_key)
-
-def get_road_distance(place1, place2):
-
-    result = gmaps.directions(
-        f"{place1['lat']},{place1['lon']}",
-        f"{place2['lat']},{place2['lon']}",
-        mode="driving",
-        departure_time=datetime.now()
-    )
-    
-    if result:
-        return result[0]['legs'][0]['distance']['value'] / 1000  # Convert meters to kilometers
-    else:
-        return haversine_distance(place1['lat'], place1['lon'], place2['lat'], place2['lon'])
-
-def haversine_distance(lat1, lon1, lat2, lon2):
-    R = 6371 
-
-    phi1 = math.radians(lat1)
-    phi2 = math.radians(lat2)
-    delta_phi = math.radians(lat2 - lat1)
-    delta_lambda = math.radians(lon2 - lon1)
-
-    a = math.sin(delta_phi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-
-    return R * c
 
 def dijkstra(start_place, end_place):
     distances = {place["name"]: float("inf") for place in load_data()}

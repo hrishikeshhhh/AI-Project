@@ -70,10 +70,7 @@ def optimize_route():
 
 @app.route('/dijkstra', methods=['POST'])
 def dijkstra():
-    # places = request.json
     route, total_distance = find_shortest_route()
-    # print('Route: ' +route)
-    # print('Total Distance: ' +total_distance)
 
     return jsonify({
         'route': route,
